@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>AIと作る犬の物語</title>
+</head>
+<body>
+  <h1>🐶 あなただけの犬の物語</h1>
+
+  <label>犬の名前：</label>
+  <input type="text" id="dogName"><br><br>
+
+  <label>物語ジャンル：</label>
+  <select id="storyType">
+    <option value="冒険">冒険</option>
+    <option value="感動">感動</option>
+    <option value="日常">ほのぼの日常</option>
+    <option value="ファンタジー">ファンタジー</option>
+  </select><br><br>
+
+  <label>犬の性格：</label>
+  <select id="personality">
+    <option value="優しい">優しい</option>
+    <option value="元気いっぱい">元気いっぱい</option>
+    <option value="臆病">臆病</option>
+    <option value="賢い">賢い</option>
+  </select><br><br>
+
+  <label>飼い主との関係：</label>
+  <select id="relationship">
+    <option value="家族">家族</option>
+    <option value="親友">親友</option>
+    <option value="相棒">相棒</option>
+    <option value="守ってくれる存在">守ってくれる存在</option>
+  </select><br><br>
+
+  <label>物語の長さ：</label>
+  <select id="length">
+    <option value="300">短い（300文字）</option>
+    <option value="600">普通（600文字）</option>
+    <option value="1000">長い（1000文字）</option>
+  </select><br><br>
+
+  <label>語り口：</label>
+  <select id="tone">
+    <option value="子ども向け">子ども向け</option>
+    <option value="大人向け">大人向け</option>
+    <option value="絵本風">絵本風</option>
+    <option value="小説風">小説風</option>
+  </select><br><br>
+
+  <button onclick="createStory()">物語を作る</button>
+
+  <h2 id="title"></h2>
+  <p id="story"></p>
+
+  <script>
+    async function createStory() {
+      const body = {
+        dogName: document.getElementById("dogName").value,
+        storyType: document.getElementById("storyType").value,
+        personality: document.getElementById("personality").value,
+        relationship: document.getElementById("relationship").value,
+        length: document.getElementById("length").value,
+        tone: document.getElementById("tone").value
+      };
+
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+      document.getElementById("title").innerText = data.title;
+      document.getElementById("story").innerText = data.story;
+    }
+  </script>
+</body>
+</html>
